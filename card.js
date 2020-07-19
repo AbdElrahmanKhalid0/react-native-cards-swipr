@@ -1,15 +1,17 @@
 import React, { useRef } from "react";
-import {
-  Animated,
-  View,
-  Dimensions,
-  PanResponder,
-  StyleSheet,
-  Text,
-} from "react-native";
+import { Animated, Dimensions, PanResponder } from "react-native";
 
-function Card({ movable, onSwipe, movableCardStyles, cardStyles, index }) {
-  //   console.log(movable);
+function Card({
+  movable,
+  onSwipe,
+  movableCardStyles,
+  item,
+  index,
+  renderItem,
+  onSwipeRight,
+  onSwipeLeft,
+  onSwipeUp,
+}) {
   if (movable) {
     const card = useRef(new Animated.ValueXY()).current;
     const scale = useRef(new Animated.Value(1)).current;
@@ -17,7 +19,8 @@ function Card({ movable, onSwipe, movableCardStyles, cardStyles, index }) {
     const left = useRef(new Animated.Value(0)).current;
     const right = useRef(new Animated.Value(0)).current;
 
-    const WINDOW_HALF = Dimensions.get("window").width / 2;
+    const WIDTH_HALF = Dimensions.get("window").width / 2;
+    const HEIGHT_HALF = Dimensions.get("window").height / 2;
 
     const panResponder = useRef(
       PanResponder.create({
@@ -28,25 +31,23 @@ function Card({ movable, onSwipe, movableCardStyles, cardStyles, index }) {
         onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
         onPanResponderGrant: (evt, gestureState) => {
-          // The gesture has started. Show visual feedback so the user knows
-          // what is happening!
-          // gestureState.d{x,y} will be set to zero now
+          // whenever the touch starts it will scale the card to 1.2 value
           Animated.spring(scale, {
             toValue: 1.2,
             useNativeDriver: true,
           }).start();
         },
         onPanResponderMove: (evt, gestureState) => {
-          // whenever the touch move it sets the card position depending
+          // whenever the touch moves it sets the card position depending
           // on the change on x and y
           card.setValue({
             x: gestureState.dx,
             y: gestureState.dy,
           });
           // and it also sets the rotation value
-          rotate.setValue(gestureState.dx * (1 / WINDOW_HALF));
+          rotate.setValue(gestureState.dx * (1 / WIDTH_HALF));
 
-          value = (gestureState.dx / WINDOW_HALF) * 5;
+          const value = (gestureState.dx / WIDTH_HALF) * 2;
           if (gestureState.dx > 0) {
             right.setValue(value > 1 ? 1 : value);
             left.setValue(0);
@@ -76,25 +77,57 @@ function Card({ movable, onSwipe, movableCardStyles, cardStyles, index }) {
             useNativeDriver: true,
           }).start();
 
-          value = (gestureState.dx / WINDOW_HALF) * 5;
+          // if the card was in a place that is right or left or up it will swipe it
+          // in that place, the more the number that is multiplied by
+          // (gestureState.dx / WIDTH_HALF) the shorter the distance between the card and
+          // its swipe position and the less it becomes the more the distance between the
+          // card and its swipe position.
+          const value = (gestureState.dx / WIDTH_HALF) * 2;
+          const upValue = (gestureState.dy / HEIGHT_HALF) * 2;
+          // right
           if (value > 1) {
             Animated.spring(card, {
               toValue: {
-                x: WINDOW_HALF * 2,
+                x: WIDTH_HALF * 2,
                 y: 0,
               },
               useNativeDriver: true,
             }).start();
-            setTimeout(onSwipe, 200);
+            setTimeout(() => {
+              onSwipe();
+              if (onSwipeRight) {
+                onSwipeRight();
+              }
+            }, 200);
+            // left
           } else if (value < -1) {
             Animated.spring(card, {
               toValue: {
-                x: -WINDOW_HALF * 2,
+                x: -WIDTH_HALF * 2,
                 y: 0,
               },
               useNativeDriver: true,
             }).start();
-            setTimeout(onSwipe, 200);
+            setTimeout(() => {
+              onSwipe();
+              if (onSwipeLeft) {
+                onSwipeLeft();
+              }
+            }, 200);
+            // up
+          } else if (onSwipeUp && upValue < -1) {
+            Animated.spring(card, {
+              toValue: {
+                x: 0,
+                y: HEIGHT_HALF * -2,
+              },
+              useNativeDriver: true,
+            }).start();
+            setTimeout(() => {
+              onSwipe();
+              onSwipeUp();
+            }, 200);
+            // the card didn't reach its swipe position
           } else {
             Animated.spring(card, {
               toValue: { x: 0, y: 0 },
@@ -131,64 +164,16 @@ function Card({ movable, onSwipe, movableCardStyles, cardStyles, index }) {
         }
         {...(movable ? panResponder.panHandlers : {})}
       >
-        <View style={[styles.box, styles.shadow, cardStyles]}>
-          <Text>{index}</Text>
-        </View>
+        {renderItem(item, index)}
       </Animated.View>
     );
   } else {
     return (
       <Animated.View style={movableCardStyles}>
-        <View style={[styles.box, styles.shadow, cardStyles]}>
-          <Text>{index}</Text>
-        </View>
+        {renderItem(item, index)}
       </Animated.View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  box: {
-    height: 150,
-    width: 150,
-    backgroundColor: "tomato",
-    borderRadius: 5,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  left: {
-    position: "absolute",
-    transform: [{ translateX: 10 }, { translateY: 10 }],
-  },
-  right: {
-    position: "absolute",
-    transform: [{ translateX: 110 }, { translateY: 10 }],
-  },
-  backBox: {
-    position: "absolute",
-    height: 150,
-    width: 150,
-    zIndex: -1,
-    borderRadius: 5,
-    transform: [{ translateY: -90 }],
-    backgroundColor: "wheat",
-  },
-  shadow: {
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.22,
-    shadowRadius: 2.22,
-
-    elevation: 3,
-  },
-});
 
 export default Card;

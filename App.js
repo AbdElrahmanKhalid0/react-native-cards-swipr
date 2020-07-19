@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import { View, StyleSheet } from "react-native";
-import Card from "./card";
+import React from "react";
+import { View, StyleSheet, Text } from "react-native";
+import Cards from "./cards";
 
 const data = Array.from(Array(50), (_, i) => i + 1);
 function getRandomColor(j) {
@@ -9,7 +9,7 @@ function getRandomColor(j) {
   for (var i = 0; i < 6; i++) {
     color += letters[Math.floor(Math.random() * 16)];
   }
-  // console.log(i);
+
   if (colors[j]) {
     return colors[j];
   } else {
@@ -21,33 +21,32 @@ function getRandomColor(j) {
 const colors = {};
 
 const App = () => {
-  useEffect(() => {
-    setCurrentCardIdx(1);
-  }, []);
-  const [currentCardIdx, setCurrentCardIdx] = useState(1);
-
   return (
     <View style={styles.container}>
-      {data
-        .slice(0, 2)
-        .reverse()
-        .map((element) => {
-          return (
-            <Card
-              movable={currentCardIdx === element}
-              onSwipe={() => {
-                data.shift();
-                setCurrentCardIdx(currentCardIdx + 1);
-              }}
-              cardStyles={{ backgroundColor: getRandomColor(element) }}
-              movableCardStyles={{
-                ...(currentCardIdx !== element ? { ...styles.card } : {}),
-              }}
-              index={element}
-              key={element}
-            />
-          );
-        })}
+      <Cards
+        items={data}
+        showableCards={2}
+        onSwipeUp={() => {
+          console.log("swiped up")
+        }}
+        onSwipeRight={() => {
+          console.log("swiped right")
+        }}
+        onSwipeLeft={() => {
+          console.log("swiped left")
+        }}
+        renderItem={(item, index) => (
+          <View
+            style={[
+              styles.box,
+              styles.shadow,
+              { backgroundColor: getRandomColor(item) },
+            ]}
+          >
+            <Text>{item}</Text>
+          </View>
+        )}
+      />
     </View>
   );
 };
@@ -58,10 +57,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  card: {
-    position: "absolute",
-    zIndex: -1,
+  box: {
+    height: 150,
+    width: 150,
+    backgroundColor: "tomato",
+    borderRadius: 5,
+    justifyContent: "center",
+    alignItems: "center",
   },
+  shadow: {
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.22,
+    shadowRadius: 2.22,
+
+    elevation: 3,
+  }
 });
 
 export default App;
