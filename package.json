@@ -1,23 +1,42 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "name": "react-native-cards-swipr",
+  "version": "1.0.0",
+  "description": "A react-native component that enables you to make swipeable cards.",
+  "main": "index.js",
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "dependencies": {
-    "expo": "~38.0.8",
-    "expo-status-bar": "^1.0.2",
-    "react": "~16.11.0",
-    "react-dom": "~16.11.0",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
-    "react-native-web": "~0.11.7"
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AbdElrahmanKhalid0/react-native-cards-swipr.git"
   },
+  "keywords": [
+    "react-native",
+    "react-component",
+    "react-native-component",
+    "react",
+    "react native",
+    "mobile",
+    "ios",
+    "android",
+    "ui",
+    "tinder",
+    "swipe",
+    "card",
+    "cards",
+    "swiper",
+    "cards swiper",
+    "swipeable-cards",
+    "swipeable cards"
+  ],
+  "author": "Abdelrahman Khalid",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AbdElrahmanKhalid0/react-native-cards-swipr/issues"
+  },
+  "homepage": "https://github.com/AbdElrahmanKhalid0/react-native-cards-swipr#readme",
+  "private": false,
   "devDependencies": {
-    "@babel/core": "^7.8.6",
-    "babel-preset-expo": "~8.1.0"
-  },
-  "private": true
+    "metro-react-native-babel-preset": "^0.60.0"
+  }
 }

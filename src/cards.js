@@ -5,7 +5,15 @@ import Card from "./card";
 let offset = 0;
 let data = [];
 
-const Cards = ({ showableCards, items, renderItem, onSwipe, onSwipeUp, onSwipeRight, onSwipeLeft, }) => {
+const Cards = ({
+  showableCards,
+  items,
+  renderItem,
+  onSwipe,
+  onSwipeUp,
+  onSwipeRight,
+  onSwipeLeft,
+}) => {
   useEffect(() => {
     setCurrentCardIdx(0);
     // copying the items
