@@ -30,20 +30,25 @@ then you can use it like this
   // the rendered data, and whenever a card is swiped the data it represents will be removed from the items list
   items={items}
   // the rendered cards in the view the default is 2 and the lower this number
-  // the smoother the move also it can't be less than 2
+  // the smoother the move, also if it was less than 2 when the card moves
+  // the bottom card won't be visible until the card is swiped
   showableCards={5}
-  onSwipe={() => {
+  onSwipe={(item, index) => {
     // a function that will be called whenever a swipe is made
   }}
-  onSwipeUp={() => {
+  onSwipeUp={(item, index) => {
     // a function that will be called whenever a card is swiped up and if it
     // wasn't given the cards can't be swiped up
   }}
-  onSwipeRight={() => {
+  onSwipeDown={(item, index) => {
+    // a function that will be called whenever a card is swiped down and has
+    // the same functionality as the onSwipeUp function
+  }}
+  onSwipeRight={(item, index) => {
     // a function that will be called whenever a card is swiped right and if
     // this function wasn't given the cards will still be able to swiped right
   }}
-  onSwipeLeft={() => {
+  onSwipeLeft={(item, index) => {
     // a function that will be called whenever a card is swiped left and has
     // the same functionality as the onSwipeRight function
   }}

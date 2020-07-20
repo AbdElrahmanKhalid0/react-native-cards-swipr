@@ -11,6 +11,7 @@ function Card({
   onSwipeRight,
   onSwipeLeft,
   onSwipeUp,
+  onSwipeDown,
   onMoveStart,
 }) {
   if (movable) {
@@ -98,9 +99,9 @@ function Card({
               useNativeDriver: true,
             }).start();
             setTimeout(() => {
-              onSwipe();
+              onSwipe(item, index);
               if (onSwipeRight) {
-                onSwipeRight();
+                onSwipeRight(item, index);
               }
             }, 200);
             // left
@@ -113,9 +114,9 @@ function Card({
               useNativeDriver: true,
             }).start();
             setTimeout(() => {
-              onSwipe();
+              onSwipe(item, index);
               if (onSwipeLeft) {
-                onSwipeLeft();
+                onSwipeLeft(item, index);
               }
             }, 200);
             // up
@@ -128,8 +129,21 @@ function Card({
               useNativeDriver: true,
             }).start();
             setTimeout(() => {
-              onSwipe();
-              onSwipeUp();
+              onSwipe(item, index);
+              onSwipeUp(item, index);
+            }, 200);
+            // down
+          } else if (onSwipeDown && upValue > 1) {
+            Animated.spring(card, {
+              toValue: {
+                x: 0,
+                y: HEIGHT_HALF * 2,
+              },
+              useNativeDriver: true,
+            }).start();
+            setTimeout(() => {
+              onSwipe(item, index);
+              onSwipeDown(item, index);
             }, 200);
             // the card didn't reach its swipe position
           } else {

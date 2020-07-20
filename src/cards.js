@@ -10,6 +10,7 @@ const Cards = ({
   renderItem,
   onSwipe,
   onSwipeUp,
+  onSwipeDown,
   onSwipeRight,
   onSwipeLeft,
   onMoveStart,
@@ -45,7 +46,7 @@ const Cards = ({
                   onSwipe();
                 }
                 if (onDataEnd && items.length === 0) {
-                  onDataEnd()
+                  onDataEnd();
                 }
               }}
               movableCardStyles={{
@@ -54,6 +55,7 @@ const Cards = ({
                   : {}),
               }}
               onSwipeUp={onSwipeUp}
+              onSwipeDown={onSwipeDown}
               onSwipeRight={onSwipeRight}
               onSwipeLeft={onSwipeLeft}
               onMoveStart={onMoveStart}
