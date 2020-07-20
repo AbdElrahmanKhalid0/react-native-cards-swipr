@@ -11,6 +11,7 @@ function Card({
   onSwipeRight,
   onSwipeLeft,
   onSwipeUp,
+  onMoveStart,
 }) {
   if (movable) {
     const card = useRef(new Animated.ValueXY()).current;
@@ -36,6 +37,9 @@ function Card({
             toValue: 1.2,
             useNativeDriver: true,
           }).start();
+          if (onMoveStart) {
+            onMoveStart();
+          }
         },
         onPanResponderMove: (evt, gestureState) => {
           // whenever the touch moves it sets the card position depending

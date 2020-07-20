@@ -13,6 +13,8 @@ const Cards = ({
   onSwipeUp,
   onSwipeRight,
   onSwipeLeft,
+  onMoveStart,
+  onDataEnd,
 }) => {
   useEffect(() => {
     setCurrentCardIdx(0);
@@ -47,6 +49,9 @@ const Cards = ({
                 if (onSwipe) {
                   onSwipe();
                 }
+                if (onDataEnd && data.length === 0) {
+                  onDataEnd()
+                }
               }}
               movableCardStyles={{
                 ...(currentCardIdx !== index + offset
@@ -56,6 +61,7 @@ const Cards = ({
               onSwipeUp={onSwipeUp}
               onSwipeRight={onSwipeRight}
               onSwipeLeft={onSwipeLeft}
+              onMoveStart={onMoveStart}
               renderItem={renderItem}
               item={item}
               index={index + offset}
