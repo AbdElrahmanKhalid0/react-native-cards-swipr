@@ -3,7 +3,6 @@ import { View, StyleSheet } from "react-native";
 import Card from "./card";
 
 let offset = 0;
-let data = [];
 
 const Cards = ({
   showableCards,
@@ -18,10 +17,6 @@ const Cards = ({
 }) => {
   useEffect(() => {
     setCurrentCardIdx(0);
-    // copying the items
-    for (item of items) {
-      data.push(item);
-    }
   }, []);
   if (!showableCards) {
     showableCards = 2;
@@ -30,26 +25,26 @@ const Cards = ({
 
   return (
     <View>
-      {data
+      {items
         .slice(0, showableCards)
         .reverse()
         .map((item, index) => {
           // initializing the index according to the showing cards number
           index =
-            data.length >= showableCards
+            items.length >= showableCards
               ? showableCards - index - 1
-              : data.length - index - 1;
+              : items.length - index - 1;
           return (
             <Card
               movable={currentCardIdx === index + offset}
               onSwipe={() => {
-                data.shift();
+                items.shift();
                 offset++;
                 setCurrentCardIdx(currentCardIdx + 1);
                 if (onSwipe) {
                   onSwipe();
                 }
-                if (onDataEnd && data.length === 0) {
+                if (onDataEnd && items.length === 0) {
                   onDataEnd()
                 }
               }}

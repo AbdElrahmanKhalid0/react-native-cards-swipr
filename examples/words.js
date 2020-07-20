@@ -1,8 +1,8 @@
 import React from "react";
 import { View, StyleSheet, Text } from "react-native";
-import Cards from "./cards";
+import { Cards } from "react-native-cards-swipr";
 
-const data = ["hello","world","this","is","react-native-cards-swipr"];
+const data = ["hello", "world", "this", "is", "react-native-cards-swipr"];
 
 const App = () => {
   return (
@@ -11,21 +11,16 @@ const App = () => {
         items={data}
         showableCards={2}
         onSwipeUp={() => {
-          console.log("swiped up")
+          console.log("swiped up");
         }}
         onSwipeRight={() => {
-          console.log("swiped right")
+          console.log("swiped right");
         }}
         onSwipeLeft={() => {
-          console.log("swiped left")
+          console.log("swiped left");
         }}
         renderItem={(item, index) => (
-          <View
-            style={[
-              styles.box,
-              styles.shadow,
-            ]}
-          >
+          <View style={[styles.box, styles.shadow]}>
             <Text>{item}</Text>
           </View>
         )}
@@ -58,7 +53,7 @@ const styles = StyleSheet.create({
     shadowRadius: 2.22,
 
     elevation: 3,
-  }
+  },
 });
 
 export default App;

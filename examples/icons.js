@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import { View, StyleSheet, Text, Animated } from "react-native";
-import Cards from "./cards";
+import { Cards } from "react-native-cards-swipr";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 
 // group of icons
